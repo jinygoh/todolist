@@ -1,0 +1,4 @@
+package com.jinying.springbootassignment.services;
+
+public class TaskService {
+}
