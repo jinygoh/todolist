@@ -17,6 +17,7 @@ public class Task {
     private String task;
 
 
+    @NotEmpty(message = "Complete must be false or true")
     private boolean completed;
 
     // Constructors

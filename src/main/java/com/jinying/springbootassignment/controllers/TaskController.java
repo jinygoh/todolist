@@ -2,14 +2,17 @@ package com.jinying.springbootassignment.controllers;
 
 import com.jinying.springbootassignment.models.Task;
 import com.jinying.springbootassignment.services.TaskService;
+import jakarta.validation.Valid;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/v1/tasks")
@@ -78,16 +81,22 @@ public class TaskController {
         }
     }
 
-    // create a new task
     @PostMapping("/add")
-    public ResponseEntity<Object> createTask(@RequestBody Task task) {
+    public ResponseEntity<Object> createTask(@Valid @RequestBody Task task, BindingResult bindingResult) {
+        // Check if there are any validation errors
+        if (bindingResult.hasErrors()) {
+            // Return a list of error messages with a BAD_REQUEST status code
+            return new ResponseEntity<>(bindingResult.getFieldErrors().stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.toList()), HttpStatus.BAD_REQUEST);
+        }
         try {
             // Create a new task using the task service
             Task newTask = taskService.createNewTask(task);
             // Return a ResponseEntity with the newly created task and a 201 CREATED status code
             return new ResponseEntity<>(newTask, HttpStatus.CREATED);
         } catch (Exception e) {
-            // // If an error occurs, return an error message and a 400 BAD REQUEST status code
+            // // If an error occurs, return an error message and a 400 BAD_REQUEST status code
             return new ResponseEntity<>("Error creating task. Task must not be blank and Completed can only be true or false. Please try again. ", HttpStatus.BAD_REQUEST);
         }
     }
