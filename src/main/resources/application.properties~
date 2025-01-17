@@ -13,9 +13,9 @@ spring.datasource.password=${DB_USER_PASSWORD}
 # create-drop: recreate the database tables each time the Spring Boot app re-runs
 # update: is to update the database table(s) each time the Spring Boot app re-runs
 # show-sql = true: see the sql operations when the Spring Boot app is running
-spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.ddl-auto=create-drop
 
-
+# Driver Class for MySQL
 spring.datasource.drive-class-name=com.mysql.cj.jdbc.Driver
 
 # This is used to show sql whenever any query is executed by hibernate

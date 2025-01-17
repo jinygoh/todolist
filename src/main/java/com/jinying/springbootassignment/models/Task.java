@@ -1,6 +1,10 @@
 package com.jinying.springbootassignment.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertFalse;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Task {
@@ -8,13 +12,25 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // this is the primary key which will be auto generated
     private Long id;
+
+    @NotEmpty(message = "Task must not be blank")
     private String task;
+
+
     private boolean completed;
+
+    // Constructors
 
     public Task(String task, boolean completed) {
         this.task = task;
         this.completed = completed;
     }
+
+    public Task() {
+    }
+
+    // Getters and Setters
+
     public Long getId() {
         return id;
     }
